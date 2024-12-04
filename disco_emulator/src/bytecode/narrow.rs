@@ -1,6 +1,6 @@
 use crate::utils::bits::{bitset, matches};
 use super::{ItPos, InstructionContext};
-use super::opcode::{Opcode};
+use super::opcode::Opcode;
 use super::tag;
 
 type Context = InstructionContext;

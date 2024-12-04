@@ -1,4 +1,4 @@
-use crate::{ByteInstruction};
+use crate::ByteInstruction;
 use super::opcode::{Opcode, from_opcode, to_opcode};
 use super::{ItPos, InstructionContext};
 

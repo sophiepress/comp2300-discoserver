@@ -1,12 +1,12 @@
-use crate::{ByteInstruction};
+use crate::ByteInstruction;
 use crate::utils::bits::is_wide_thumb;
 use std::fmt;
 
 mod narrow;
-use narrow::{decode_thumb_narrow};
+use narrow::decode_thumb_narrow;
 
 mod wide;
-use wide::{decode_thumb_wide};
+use wide::decode_thumb_wide;
 
 pub mod opcode;
 pub mod tag;

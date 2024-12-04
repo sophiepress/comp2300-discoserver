@@ -3,7 +3,7 @@
 use std::path::PathBuf;
 use disco_emulator::Board;
 use std::path::Path;
-use std::process::{Child};
+use std::process::Child;
 use std::io::{Read, Write};
 use std::net::{TcpStream, Shutdown};
 

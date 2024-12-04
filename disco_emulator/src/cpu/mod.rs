@@ -1,7 +1,7 @@
 use std::fmt;
 
 use crate::utils::bits::bitset;
-use crate::bytecode::{ItPos};
+use crate::bytecode::ItPos;
 
 // NOTE: condition checking is defined in A7.3.1 p178
 #[derive(Copy, Clone, Debug)]

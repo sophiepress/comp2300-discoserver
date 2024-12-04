@@ -3,10 +3,10 @@
 extern crate goblin;
 
 mod audio;
-use audio::{AudioHandler};
+use audio::AudioHandler;
 
 mod bytecode;
-use bytecode::{InstructionCache, InstructionContext, decode_thumb, tag, opcode::{Opcode}};
+use bytecode::{InstructionCache, InstructionContext, decode_thumb, tag, opcode::Opcode};
 
 mod cpu;
 use cpu::{CPU, ExecMode, Condition};

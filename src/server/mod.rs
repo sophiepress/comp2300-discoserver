@@ -6,11 +6,11 @@ use query::{Query, Set};
 
 use std::collections::{HashSet, VecDeque};
 use std::env;
-use std::ffi::{OsString};
+use std::ffi::OsString;
 use std::io::prelude::*;
-use std::io::{Read};
+use std::io::Read;
 use std::net::{TcpStream, TcpListener, Shutdown};
-use std::path::{PathBuf};
+use std::path::PathBuf;
 use std::vec;
 
 use disco_emulator::Board;
