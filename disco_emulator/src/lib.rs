@@ -748,10 +748,14 @@ impl Board {
         return self.cpu.read_reg(reg);
     }
 
-    fn write_reg<T: Into<u32>>(&mut self, reg: T, val: u32) {
+    pub fn write_reg<T: Into<u32>>(&mut self, reg: T, val: u32) {
         // TODO: Follow B1.4.7 p521
         let reg = reg.into();
-        self.cpu.write_reg(reg, val);
+        if reg == 13 { // stack pointer1
+            self.cpu.write_sp(val);
+        } else {
+            self.cpu.write_reg(reg, val);
+        }
     }
 
     fn get_register_display_value(&self, reg: u8) -> String {

@@ -267,6 +267,17 @@ impl GdbServer<'_> {
                     }
                     self.send_reply(strs.as_slice());
                 }
+                Request::WriteRegister { number, value } => {
+                    self.board.write_reg(number, value.swap_bytes()); 
+                    self.send_reply_ok(); 
+                }
+                Request::WriteRegisters { values } => {
+                    // TODO: silently ignores writing xpsr at the moment.
+                    for (reg, val) in (0..=15u32).zip(values) {
+                        self.board.write_reg(reg, val);
+                    }
+                    self.send_reply_ok();
+                }
                 Request::WriteMemory { address: _, length: _, bytes: _ } => {
                     self.send_reply_empty();
                 }
@@ -457,6 +468,17 @@ impl GdbServer<'_> {
     }
 
     fn parse_write_registers(&mut self, _packet: &[u8]) -> Result<Request, ()> {
+        /* AFAICT there is no corresponding gdb command to that will trigger
+           the associated request (`GXXX...`)? Instead this was tested using the 
+           `maintenance packet` command. */
+        match parse_word_bytes(&_packet[1..]) {
+            Ok(r) => {
+                return Ok(Request::WriteRegisters { values: r });
+            },
+            Err(e) => {
+                println!("Error {e:?}")
+            }
+        }
         return Err(());
     }
 
@@ -788,6 +810,18 @@ fn parse_read_memory(mut data: &[u8]) -> Result<(u32, u32), ()> {
     }
 
     return Ok((hex_to_word(addr)?, hex_to_word(length)?));
+}
+
+fn parse_word_bytes(data: &[u8]) -> Result<Vec<u32>, ()> {
+    if data.len() % 8 != 0 {
+        return Err(());
+    }
+    let mut out = Vec::new();
+    let mut iter = data.chunks_exact(8);
+    while let Some(&[a,b,c,d,e,f,g,h]) = iter.next() {
+        out.push((hex_to_word(&[a,b,c,d,e,f,g,h])?).swap_bytes());
+    }
+    return Ok(out);
 }
 
 fn parse_hex_bytes(data: &[u8]) -> Result<Vec<u8>, ()> {
