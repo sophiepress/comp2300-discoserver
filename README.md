@@ -35,23 +35,6 @@ cargo build
     }
     ```
 
-    ```
-    {
-        "type": "cortex-debug",
-        "request": "launch",
-        "name": "ARM Emulator Debug",
-        "cwd": "${workspaceRoot}",
-        "device": "STM32L476vg",
-        "executable": "${workspaceRoot}/.pio/build/disco_l476vg/firmware.elf",
-        "servertype": "qemu",
-        "preLaunchTask": "PlatformIO: Build",
-        "serverpath": "/abs/path/to/comp2300-disco-emulator/target/debug/discoserver",
-        "postLaunchCommands": [
-            "-break-insert main"
-        ]
-    }
-    ```
-
 4. Select the `Build & Debug (Emulator)` option in the debug selection and use it like normal.
 
 
