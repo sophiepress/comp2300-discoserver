@@ -269,7 +269,7 @@ fn str() {
     board.step().unwrap();
 
     let test_val = 0x32A7F092;
-    for i in (0x2000_0000..0x2001_8000).step_by(4) {
+    for i in (0x2000_0000..0x2001_F000).step_by(4) {
         match board.memory.read_mem_u(i, 4) {
             Ok(v) => {
                 if v != test_val {
@@ -399,32 +399,32 @@ fn push() {
 
     // PUSH T1
     board.step_n(2).unwrap();
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 4, 4).unwrap(), 14);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 8, 4).unwrap(), 7);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 12, 4).unwrap(), 3);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 16, 4).unwrap(), 0);
-    assert_eq!(board.read_sp(), 0x2001_8000 - 16);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 4, 4).unwrap(), 14);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 8, 4).unwrap(), 7);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 12, 4).unwrap(), 3);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 16, 4).unwrap(), 0);
+    assert_eq!(board.read_sp(), 0x2001_F000 - 16);
 
     // PUSH T2
     board.step_n(2).unwrap();
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 4, 4).unwrap(), 14);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 8, 4).unwrap(), 12);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 12, 4).unwrap(), 11);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 16, 4).unwrap(), 10);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 20, 4).unwrap(), 8);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 24, 4).unwrap(), 7);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 28, 4).unwrap(), 6);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 32, 4).unwrap(), 5);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 36, 4).unwrap(), 4);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 40, 4).unwrap(), 3);
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 44, 4).unwrap(), 2);
-    assert_eq!(board.read_sp(), 0x2001_8000 - 44);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 4, 4).unwrap(), 14);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 8, 4).unwrap(), 12);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 12, 4).unwrap(), 11);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 16, 4).unwrap(), 10);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 20, 4).unwrap(), 8);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 24, 4).unwrap(), 7);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 28, 4).unwrap(), 6);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 32, 4).unwrap(), 5);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 36, 4).unwrap(), 4);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 40, 4).unwrap(), 3);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 44, 4).unwrap(), 2);
+    assert_eq!(board.read_sp(), 0x2001_F000 - 44);
 
     // PUSH T3
     board.step().unwrap();
-    assert_eq!(board.read_sp(), 0x2001_7FFC); // The stack pointer lower bits are cleared
+    assert_eq!(board.read_sp(), 0x2001_EFFC); // The stack pointer lower bits are cleared
     board.step().unwrap();
-    assert_eq!(board.memory.read_mem_u(0x2001_8000 - 8, 4).unwrap(), 14);
+    assert_eq!(board.memory.read_mem_u(0x2001_F000 - 8, 4).unwrap(), 14);
 }
 
 #[test]
@@ -436,7 +436,7 @@ fn pop() {
     assert_eq!(board.read_reg(7u32), 0xC);
     assert_eq!(board.read_reg(4u32), 0xB);
     assert_eq!(board.read_reg(1u32), 0xA);
-    assert_eq!(board.read_sp(), 0x2001_8000);
+    assert_eq!(board.read_sp(), 0x2001_F000);
 
     // POP T2
     board.step_n(2).unwrap();
@@ -444,12 +444,12 @@ fn pop() {
     assert_eq!(board.read_reg(11u32), 0x9);
     assert_eq!(board.read_reg(12u32), 0xA);
     assert_eq!(board.read_lr(), 0xB);
-    assert_eq!(board.read_sp(), 0x20017FFC);
+    assert_eq!(board.read_sp(), 0x2001EFFC);
 
     // POP T3
     board.step_n(2).unwrap();
     assert_eq!(board.read_reg(5u32), 0x9);
-    assert_eq!(board.read_sp(), 0x20017FF4);
+    assert_eq!(board.read_sp(), 0x2001EFF4);
 }
 
 #[test]

@@ -10,7 +10,7 @@ MEMORY {
 
 OUTPUT_FORMAT ("elf32-littlearm")
 
-_stack_end = ORIGIN(RAM) + LENGTH(RAM); /* 0x2001_8000 */
+_stack_end = ORIGIN(RAM) + LENGTH(RAM); /* 0x2001_F000 */
 
 _min_stack_size = 0x400;
 

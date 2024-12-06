@@ -135,7 +135,7 @@ pub fn load_and_wait(name: &str, wait_reg: u32, wait_signal: u32) -> Result<Boar
             }
         }
         i += 1;
-        if i > 100_000 {
+        if i > 130_000 {
             return Err("Board setup exceeded default iterations".to_string());
         }
     }
