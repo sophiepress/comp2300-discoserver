@@ -1,5 +1,9 @@
 # Changelog (disco-server)
 
+## 1.3.0 - 2024-12-06
+
+- Added support for writing register values with GDB
+
 ## 1.2.1 - 2020-04-29
 
 ### Changed
