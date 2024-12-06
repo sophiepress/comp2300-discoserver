@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
       - name: Display structure of downloaded files
         run: ls -R
       - name: Release
@@ -46,7 +46,7 @@ jobs:
       run: |
         zip -j discoserver-linux target/release/discoserver
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v4
       with:
         name: discoserver
         path: discoserver-linux.zip
@@ -61,7 +61,7 @@ jobs:
       run: |
         zip -j discoserver-darwin target/release/discoserver
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v4
       with:
         name: discoserver
         path: discoserver-darwin.zip
@@ -76,7 +76,7 @@ jobs:
       run: |
         powershell Compress-Archive -LiteralPath target\release\discoserver.exe discoserver-win32.zip 
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v4
       with:
         name: discoserver
         path: discoserver-win32.zip
