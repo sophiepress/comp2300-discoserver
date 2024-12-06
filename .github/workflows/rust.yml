@@ -48,7 +48,7 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: discoserver
+        name: discoserver-linux
         path: discoserver-linux.zip
 
   build-macos:
@@ -63,7 +63,7 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: discoserver
+        name: discoserver-darwin
         path: discoserver-darwin.zip
 
   build-windows:
@@ -78,5 +78,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: discoserver
+        name: discoserver-win32
         path: discoserver-win32.zip
