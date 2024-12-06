@@ -1,46 +1,38 @@
 /* We skip the normal startup script and start directly at main. This means .data and the sp are not initialised */
 ENTRY(main)
 
-_stack_end = 0x20018000;
-
+/* Specifies the size and location of the memory areas */
 MEMORY {
-  RAM (xrw) : ORIGIN = 0x20000000, LENGTH = 96K
-  RAM2 (xrw) : ORIGIN = 0x10000000, LENGTH = 32K
-  FLASH (rx) : ORIGIN = 0x8000000, LENGTH = 1024K
+    FLASH   (rx)  : ORIGIN = 0x00000000,      LENGTH = 512K
+    RAM     (rwx) : ORIGIN = 0x20000000,      LENGTH = 124K
+    CODERAM (rwx) : ORIGIN = 0x00800000+124K, LENGTH = 4K
 }
 
+OUTPUT_FORMAT ("elf32-littlearm")
+
+_stack_end = ORIGIN(RAM) + LENGTH(RAM); /* 0x2001_8000 */
+
+_min_stack_size = 0x400;
+
 SECTIONS {
-  .isr_vector : {
-    . = ALIGN(4);
-    KEEP(*(.isr_vector))
-    . = ALIGN(4);
-  } > FLASH
+    .rodata.vtable : { *(.rodata.vtable) } > FLASH
 
-  .text : {
-    . = ALIGN(4);
-    _text_start = .;
-    *(.text)
-    . = ALIGN(4);
-    _text_end = .;
-  } > FLASH
+    .text : {
+        . = ALIGN(4);
+        _text_start = .;
+        *(.text)
+        _text_end = .;
+    } > FLASH
 
-  _data_start_flash = LOADADDR(.data);
+    .data : {
+        . = ALIGN(4);
+        _data_start_ram = .;
+        KEEP(*(.data))
+        . = ALIGN(4);
+        _data_end_ram = .;
 
-  .data : {
-    . = ALIGN(4);
-    _data_start_ram = .;
-    KEEP(*(.data))
-    . = ALIGN(4);
-    _data_end_ram = .;
-  } > RAM AT > FLASH
+    } > RAM AT> FLASH
 
-  .bss : {
-    . = ALIGN(4);
-    _bss_start = .;
-    *(.bss)
-    . = ALIGN(4);
-    _bss_end = .;
-  } > RAM
-
-  .ARM.attributes 0 : { *(.ARM.attributes) }
+    _data_start_flash = LOADADDR(.data);
+    _data_end_flash = _data_start_flash + (_data_end_ram - _data_start_ram);
 }

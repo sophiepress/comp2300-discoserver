@@ -7,6 +7,7 @@ use std::path::Path;
 use crate::common::online::write_program;
 use crate::common::online::build_program;
 use std::io::Write;
+use common::get_vtable_path;
 use disco_emulator::Board;
 
 pub mod common;
@@ -15,7 +16,7 @@ use crate::common::compile_program;
 use common::online::Online;
 
 fn run_program(name: &str, src_path: &Path) {
-    let elf_path = compile_program(&src_path, &get_default_linker().unwrap()).unwrap();
+    let elf_path = compile_program(&src_path, &get_default_linker().unwrap(), &get_vtable_path().unwrap()).unwrap();
     let mut board = Board::new();
     board.load_elf_from_path(&elf_path).unwrap();
     let mut online = Online::new(&elf_path).unwrap();

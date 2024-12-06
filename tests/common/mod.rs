@@ -26,7 +26,7 @@ fn get_tests_path() -> Result<PathBuf, String> {
     return Ok(path);
 }
 
-pub fn compile_program(src_path: &Path, linker_path: &Path) -> Result<PathBuf, String> {
+pub fn compile_program(src_path: &Path, linker_path: &Path, vtable_path: &Path) -> Result<PathBuf, String> {
     let mut elf_path = PathBuf::from(&src_path);
     elf_path.push("firmware.elf");
 
@@ -37,6 +37,7 @@ pub fn compile_program(src_path: &Path, linker_path: &Path) -> Result<PathBuf, S
                                 .arg("-o")
                                 .arg("main.o")
                                 .arg("main.S")
+                                .arg(&vtable_path)
                                 .current_dir(&src_path)
                                 .spawn()
                                 .expect("failed to execute assembler; is `arm-none-eabi-as` on your PATH?");
@@ -49,7 +50,6 @@ pub fn compile_program(src_path: &Path, linker_path: &Path) -> Result<PathBuf, S
     let mut ld_child = Command::new("arm-none-eabi-ld")
                                 .arg("-T")
                                 .arg(&linker_path)
-                                .arg("-nostartfiles")
                                 .arg("-o")
                                 .arg(&elf_path)
                                 .arg("main.o")
@@ -71,21 +71,33 @@ pub fn get_default_linker() -> Result<PathBuf, String> {
     return Ok(path);
 }
 
+pub fn get_vtable_path() -> Result<PathBuf, String> {
+    let mut path = get_tests_path()?;
+    path.push("fixtures");
+    path.push("common");
+    path.push("vtable.S");
+    return Ok(path);
+}
+
 pub fn load_program(name: &str) -> Result<Board, String> {
     let mut path = get_tests_path()?;
     path.push("fixtures");
 
     let mut linker_path = PathBuf::from(&path);
+    let mut vtable_path = PathBuf::from(&path);
     linker_path.push("common");
     linker_path.push("linker.ld");
+    vtable_path.push("common");
+    vtable_path.push("vtable.S"); 
     println!("linker: {:?}", linker_path);
+    println!("vtable.S: {:?}", vtable_path);
 
     let mut src_path = PathBuf::from(&path);
     src_path.push("offline");
     src_path.push(name);
     println!("src: {:?}", src_path);
 
-    let elf_path = compile_program(&src_path, &linker_path)?;
+    let elf_path = compile_program(&src_path, &linker_path, &vtable_path)?;
     let mut board = Board::new();
     board.load_elf_from_path(&elf_path)?;
 
